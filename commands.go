@@ -27,11 +27,12 @@ func commandMap(cfg *config) error {
 	if cfg.Next != nil {
 		url = *cfg.Next
 	}
-	locationList := apiInter.RequestLocation(url)
+	locationList := apiInter.RequestLocation(url, cfg.Cache)
 	cfg.Previous = &locationList.Previous
 	cfg.Next = &locationList.Next
 	//fmt.Println(cfg.Next)
 	//fmt.Println(*cfg.Next)
+	//fmt.Println(*cfg.Previous)
 	for _, location := range locationList.Results {
 		fmt.Println(location.Name)
 	}
@@ -40,10 +41,10 @@ func commandMap(cfg *config) error {
 
 func commandMapb(cfg *config) error {
 	url := baseUrl + "location-area/"
-	if cfg.Previous != nil {
+	if cfg.Previous != nil && *cfg.Previous != "" {
 		url = *cfg.Previous
 	}
-	locationList := apiInter.RequestLocation(url)
+	locationList := apiInter.RequestLocation(url, cfg.Cache)
 	cfg.Previous = &locationList.Previous
 	cfg.Next = &locationList.Next
 	for _, location := range locationList.Results {

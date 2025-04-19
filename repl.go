@@ -2,6 +2,8 @@ package main
 
 import (
 	"strings"
+
+	"github.com/uller91/goDex/internal/cache"
 )
 
 func cleanInput(text string) []string {
@@ -15,6 +17,7 @@ type cliCommand struct {
 }
 
 type config struct {
+	Cache		*cache.Cache
 	Next		*string
 	Previous	*string
 }
