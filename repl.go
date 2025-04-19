@@ -4,6 +4,7 @@ import (
 	"strings"
 
 	"github.com/uller91/goDex/internal/cache"
+	"github.com/uller91/goDex/internal/apiInter"
 )
 
 func cleanInput(text string) []string {
@@ -13,13 +14,18 @@ func cleanInput(text string) []string {
 type cliCommand struct {
 	name        string
 	description string
-	callback    func(*config) error
+	callback    func(*config, *parameters) error
 }
 
 type config struct {
 	Cache		*cache.Cache
 	Next		*string
 	Previous	*string
+	Pokedex		map[string]apiInter.PokemonStats
+}
+
+type parameters struct {
+	Key	string
 }
 
 func getCommand() map[string]cliCommand {
@@ -44,6 +50,25 @@ func getCommand() map[string]cliCommand {
 			description: "Display previous 20 locations in the world",
 			callback:	 commandMapb,
 		},
+		"explore": {
+			name:		 "explore <area_name>",
+			description: "Display all the pokemon found in <area_name>",
+			callback:	 commandExplore,
+		},
+		"catch": {
+			name:		 "catch <pokemon>",
+			description: "Try to catch the <pokemon>",
+			callback:	 commandCatch,
+		},
+		"inspect": {
+			name:		 "inspect <pokemon>",
+			description: "Inspect the <pokemon>",
+			callback:	 commandInspect,
+		},
+		"pokedex": {
+			name:		 "pokedex",
+			description: "Display all the pokemons caught!",
+			callback:	 commandPokedex,
+		},
 }
-
 }

@@ -17,10 +17,7 @@ func normalizeURLLocationArea(url string) string {
 }
 
 func RequestData(url string, cache *cache.Cache) []byte {
-	url = normalizeURLLocationArea(url)
-
 	//check the cache
-	//fmt.Printf("!!!      %v!!!\n", url)
 	if data, found := cache.Get(url); found {
 		fmt.Println("Extracting data from cache...")
 		return data
@@ -45,6 +42,7 @@ func RequestData(url string, cache *cache.Cache) []byte {
 }
 
 func RequestLocation(url string, cache *cache.Cache) LocationResults {
+	url = normalizeURLLocationArea(url)
 	data := RequestData(url, cache)
 
 	//unmarshal data
@@ -57,5 +55,28 @@ func RequestLocation(url string, cache *cache.Cache) LocationResults {
 	return locationsList
 }
 
+func RequestPokemon(url string, cache *cache.Cache) PokemonResults {
+	data := RequestData(url, cache)
 
-//func RequestPokemon()
+	//unmarshal data
+	pokemonList := PokemonResults{}
+	err := json.Unmarshal(data, &pokemonList)
+	if err != nil {
+		fmt.Printf("Error: %v\n", err)
+	}
+
+	return pokemonList
+}
+
+func RequestPokemonStats(url string, cache *cache.Cache) PokemonStats {
+	data := RequestData(url, cache)
+
+	//unmarshal data
+	pokemonStats := PokemonStats{}
+	err := json.Unmarshal(data, &pokemonStats)
+	if err != nil {
+		fmt.Printf("Error: %v\n", err)
+	}
+
+	return pokemonStats
+}
